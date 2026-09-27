@@ -1,0 +1,10 @@
+node_modules
+.git
+.gitignore
+*.db
+*.db-journal
+data/*.db
+data/*.db-journal
+npm-debug.log
+pnpm-lock.yaml
+.env

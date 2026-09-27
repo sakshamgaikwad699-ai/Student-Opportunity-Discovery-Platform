@@ -1,0 +1,217 @@
+<%- include('partials/header') %>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <!-- Header & Mode Toggle -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">Explore Opportunities</h1>
+      <p class="text-sm text-slate-400 mt-1">Discover, search, and filter hackathons, internships, scholarships, and certifications</p>
+    </div>
+
+    <!-- Toggle Mode Switch -->
+    <div class="flex items-center bg-slate-800/90 p-1 rounded-2xl border border-slate-700/80">
+      <a href="/opportunities" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-700 text-indigo-300 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+        📋 List View
+      </a>
+      <a href="/discover" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-indigo-400 flex items-center space-x-1.5 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+        <span>⚡ Swipe Deck (Discover)</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Search & Filter Controls Glass Panel -->
+  <form action="/opportunities" method="GET" class="bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-xl space-y-5">
+    
+    <!-- Search Bar -->
+    <div class="relative">
+      <input type="text" name="search" value="<%= filters.search %>" placeholder="Search by title, organization, or keyword (e.g. Python, AI, Remote, Google)..." class="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 text-sm text-slate-100 bg-slate-800/90 placeholder-slate-400">
+      <svg class="w-5 h-5 text-slate-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      
+      <!-- Category Filter -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">Category</label>
+        <select name="category" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700/80 text-xs font-medium text-slate-200 bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <option value="all" <%= filters.category === 'all' ? 'selected' : '' %>>All Categories</option>
+          <option value="hackathon" <%= filters.category === 'hackathon' ? 'selected' : '' %>>Hackathons</option>
+          <option value="internship" <%= filters.category === 'internship' ? 'selected' : '' %>>Internships</option>
+          <option value="scholarship" <%= filters.category === 'scholarship' ? 'selected' : '' %>>Scholarships</option>
+          <option value="certification" <%= filters.category === 'certification' ? 'selected' : '' %>>Certifications</option>
+          <option value="competition" <%= filters.category === 'competition' ? 'selected' : '' %>>Competitions</option>
+          <option value="workshop" <%= filters.category === 'workshop' ? 'selected' : '' %>>Workshops</option>
+          <option value="course" <%= filters.category === 'course' ? 'selected' : '' %>>Courses</option>
+        </select>
+      </div>
+
+      <!-- Location Filter -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">Location</label>
+        <select name="location" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700/80 text-xs font-medium text-slate-200 bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <option value="all" <%= filters.location === 'all' ? 'selected' : '' %>>All Locations</option>
+          <option value="remote" <%= filters.location === 'remote' ? 'selected' : '' %>>Remote Only</option>
+          <option value="onsite" <%= filters.location === 'onsite' ? 'selected' : '' %>>In-Person / On-Site</option>
+        </select>
+      </div>
+
+      <!-- Deadline Range Filter -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">Deadline Range</label>
+        <select name="deadline" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700/80 text-xs font-medium text-slate-200 bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <option value="all" <%= filters.deadline === 'all' ? 'selected' : '' %>>All Deadlines</option>
+          <option value="active" <%= filters.deadline === 'active' ? 'selected' : '' %>>Active & Upcoming</option>
+          <option value="soon_7" <%= filters.deadline === 'soon_7' ? 'selected' : '' %>>Closing in ≤ 7 Days</option>
+          <option value="soon_14" <%= filters.deadline === 'soon_14' ? 'selected' : '' %>>Closing in ≤ 14 Days</option>
+          <option value="soon_30" <%= filters.deadline === 'soon_30' ? 'selected' : '' %>>Closing in ≤ 30 Days</option>
+          <option value="expired" <%= filters.deadline === 'expired' ? 'selected' : '' %>>Past Deadlines</option>
+        </select>
+      </div>
+
+      <!-- Required Skill Filter -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">Filter by Skill</label>
+        <select name="skill" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700/80 text-xs font-medium text-slate-200 bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <option value="" <%= !filters.skill ? 'selected' : '' %>>Any Skill</option>
+          <% allSkills.forEach(s => { %>
+            <option value="<%= s %>" <%= filters.skill === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <!-- Sort By -->
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">Sort By</label>
+        <select name="sort" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700/80 text-xs font-medium text-slate-200 bg-slate-800/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <% if (currentUser) { %>
+            <option value="relevance" <%= filters.sort === 'relevance' ? 'selected' : '' %>>🎯 Match Score</option>
+          <% } %>
+          <option value="deadline" <%= filters.sort === 'deadline' ? 'selected' : '' %>>⏰ Deadline (Earliest)</option>
+          <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>🆕 Newest Posted</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Filter Buttons Row -->
+    <div class="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
+      <span class="text-slate-400 font-medium">Found <strong class="text-white font-bold"><%= totalCount %></strong> matching opportunities</span>
+      <div class="flex space-x-2">
+        <a href="/opportunities" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          Reset Filters
+        </a>
+        <button type="submit" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- Opportunities Grid -->
+  <% if (opportunities.length === 0) { %>
+    <div class="bg-slate-900 p-12 text-center rounded-3xl border border-slate-800 space-y-3 shadow-xl">
+      <div class="text-4xl">🔍</div>
+      <h3 class="text-lg font-bold text-white">No opportunities match your search criteria</h3>
+      <p class="text-xs text-slate-400">Try adjusting your category, deadline range, or search keywords.</p>
+      <a href="/opportunities" class="inline-block px-5 py-2.5 bg-indigo-600 text-white text-xs font-bold rounded-xl shadow-md hover:bg-indigo-500 transition-all duration-200 hover:scale-[1.02] active:scale-95">Clear Filters</a>
+    </div>
+  <% } else { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% opportunities.forEach(opp => { %>
+        <% const isBookmarked = userBookmarkIds.has(opp.id); %>
+        
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-500/60 flex flex-col justify-between overflow-hidden group">
+          
+          <div class="p-6 space-y-4">
+            
+            <div class="flex items-center justify-between">
+              <% let badgeClass = 'badge-internship';
+                 if (opp.category === 'hackathon') badgeClass = 'badge-hackathon';
+                 else if (opp.category === 'scholarship') badgeClass = 'badge-scholarship';
+                 else if (opp.category === 'certification') badgeClass = 'badge-certification';
+                 else if (opp.category === 'competition') badgeClass = 'badge-competition';
+                 else if (opp.category === 'workshop') badgeClass = 'badge-workshop';
+                 else if (opp.category === 'course') badgeClass = 'badge-course';
+              %>
+              <span class="<%= badgeClass %> px-3 py-1 rounded-full text-xs font-bold capitalize">
+                <%= opp.category %>
+              </span>
+
+              <% if (currentUser && opp.matchScore > 0) { %>
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-950/80 text-indigo-300 border border-indigo-800/80">
+                  🎯 Match: <%= opp.matchScore %> pts
+                </span>
+              <% } %>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors line-clamp-2">
+                <a href="/opportunities/<%= opp.id %>" class="focus:outline-none focus:ring-2 focus:ring-indigo-500/40 rounded-sm"><%= opp.title %></a>
+              </h3>
+              <p class="text-xs font-semibold text-slate-400 mt-1"><%= opp.organization %> &bull; <%= opp.location %></p>
+            </div>
+
+            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+              <%= opp.description %>
+            </p>
+
+            <!-- EXPLAINABLE MATCH BREAKDOWN CHIP -->
+            <% if (currentUser && opp.matchDetails && opp.matchDetails.reasons.length > 0) { %>
+              <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/60 text-xs space-y-1">
+                <span class="font-bold text-indigo-300 block text-[11px] uppercase tracking-wider">Why Recommended:</span>
+                <span class="text-slate-300 text-[11px] leading-relaxed"><%= opp.matchDetails.reasons.slice(0, 2).join(' | ') %></span>
+              </div>
+            <% } %>
+
+            <!-- Required Skills Tags with Matched Skill Highlights -->
+            <div class="flex flex-wrap gap-1.5">
+              <% (opp.required_skills || []).forEach(skill => { %>
+                <% const isUserSkill = currentUser && (currentUser.skills || []).map(s => s.toLowerCase()).includes(skill.toLowerCase()); %>
+                <% if (isUserSkill) { %>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white border-2 border-indigo-500 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer flex items-center space-x-1">
+                    <span>✓</span>
+                    <span><%= skill %></span>
+                  </span>
+                <% } else { %>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm">
+                    <%= skill %>
+                  </span>
+                <% } %>
+              <% }) %>
+            </div>
+
+          </div>
+
+          <!-- Card Footer -->
+          <div class="px-6 py-4 bg-slate-950/60 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="font-semibold <%= opp.isExpired ? 'text-rose-400' : (opp.daysRemaining <= 7 ? 'text-amber-400 font-bold' : 'text-slate-400') %>">
+              <%= opp.isExpired ? 'Expired' : `Closing in ${opp.daysRemaining} days` %>
+            </span>
+
+            <div class="flex items-center space-x-2">
+              <button data-opportunity-id="<%= opp.id %>" class="bookmark-toggle-btn px-3 py-1.5 rounded-xl font-semibold flex items-center space-x-1.5 transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500/40 <%= isBookmarked ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700' %>">
+                <svg class="w-4 h-4 bookmark-icon transition-transform duration-300 active:scale-125" fill="<%= isBookmarked ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+                <span class="bookmark-text"><%= isBookmarked ? 'Saved' : 'Save' %></span>
+              </button>
+
+              <a href="/opportunities/<%= opp.id %>" class="px-3 py-1.5 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+                Details
+              </a>
+            </div>
+          </div>
+
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

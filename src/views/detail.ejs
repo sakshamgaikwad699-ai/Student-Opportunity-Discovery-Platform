@@ -1,0 +1,173 @@
+<%- include('partials/header') %>
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+  
+  <!-- Back Button & Category Pill -->
+  <div class="flex items-center justify-between">
+    <a href="/opportunities" class="inline-flex items-center space-x-2 text-xs font-bold text-slate-300 hover:text-indigo-400 transition-colors p-1.5 rounded-xl hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span>&larr; Back to Opportunities</span>
+    </a>
+
+    <% let badgeClass = 'badge-internship';
+       if (opportunity.category === 'hackathon') badgeClass = 'badge-hackathon';
+       else if (opportunity.category === 'scholarship') badgeClass = 'badge-scholarship';
+       else if (opportunity.category === 'certification') badgeClass = 'badge-certification';
+       else if (opportunity.category === 'competition') badgeClass = 'badge-competition';
+       else if (opportunity.category === 'workshop') badgeClass = 'badge-workshop';
+       else if (opportunity.category === 'course') badgeClass = 'badge-course';
+    %>
+    <span class="<%= badgeClass %> px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+      <%= opportunity.category %>
+    </span>
+  </div>
+
+  <!-- Main Opportunity Header Glass Panel -->
+  <div class="bg-slate-900 p-6 sm:p-10 rounded-3xl border border-slate-800 shadow-xl space-y-6">
+    
+    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
+      <div class="space-y-2">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight"><%= opportunity.title %></h1>
+        <p class="text-base font-semibold text-indigo-400 flex items-center space-x-2">
+          <span>🏛️ <%= opportunity.organization %></span>
+          <span>&bull;</span>
+          <span class="text-slate-400 font-normal">📍 <%= opportunity.location %></span>
+        </p>
+      </div>
+
+      <!-- Bookmark Toggle & Apply External Link -->
+      <div class="flex items-center space-x-3 shrink-0">
+        <button data-opportunity-id="<%= opportunity.id %>" class="bookmark-toggle-btn px-4 py-3 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500/40 <%= isBookmarked ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700' %>">
+          <svg class="w-5 h-5 bookmark-icon transition-transform duration-300 active:scale-125" fill="<%= isBookmarked ? 'currentColor' : 'none' %>" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+          <span class="bookmark-text"><%= isBookmarked ? 'Saved to Bookmarks' : 'Bookmark' %></span>
+        </button>
+
+        <!-- Apply CTA Button with Application Gateway -->
+        <a href="/opportunities/<%= opportunity.id %>/apply" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition-all duration-200 hover:scale-[1.02] active:scale-95 flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          <span>Apply Now</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Metadata Pill Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800">
+      
+      <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
+        <span class="text-xs font-semibold uppercase text-slate-500 block">Eligibility</span>
+        <span class="text-sm font-bold text-white mt-1 block"><%= opportunity.eligibility %></span>
+      </div>
+
+      <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
+        <span class="text-xs font-semibold uppercase text-slate-500 block">Application Deadline</span>
+        <span class="text-sm font-bold <%= opportunity.isExpired ? 'text-rose-400' : 'text-white' %> mt-1 block">
+          <%= opportunity.deadline %>
+        </span>
+      </div>
+
+      <div class="p-4 bg-slate-950/60 rounded-2xl border border-slate-800">
+        <span class="text-xs font-semibold uppercase text-slate-500 block">Deadline Countdown</span>
+        <span class="text-sm font-bold <%= opportunity.isExpired ? 'text-rose-400' : 'text-emerald-400' %> mt-1 block">
+          <%= opportunity.isExpired ? 'Application Closed' : `${opportunity.daysRemaining} Days Remaining` %>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- EXPLAINABLE RECOMMENDATION BREAKDOWN CARD -->
+    <% if (currentUser && matchDetails) { %>
+      <div class="p-6 bg-gradient-to-r from-indigo-950/90 to-purple-950/90 rounded-2xl border border-indigo-800/80 space-y-3 shadow-md">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-indigo-300 flex items-center space-x-2">
+            <span>🎯 Why This Was Recommended To You</span>
+          </h2>
+          <span class="px-3 py-1 rounded-full bg-indigo-600 text-white font-extrabold text-xs shadow-xs">
+            Match Score: <%= matchDetails.score %> pts
+          </span>
+        </div>
+
+        <div class="space-y-1.5 text-xs text-slate-300">
+          <% matchDetails.reasons.forEach(reason => { %>
+            <div class="flex items-center space-x-2">
+              <span class="text-indigo-400 font-bold">✓</span>
+              <span><%= reason %></span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Full Description Section -->
+    <div class="space-y-3">
+      <h2 class="text-lg font-bold text-white">About this Opportunity</h2>
+      <p class="text-slate-300 leading-relaxed text-sm whitespace-pre-line">
+        <%= opportunity.description %>
+      </p>
+    </div>
+
+    <!-- Required Skills with Matched Skill Highlights -->
+    <div class="space-y-3 pt-4 border-t border-slate-800">
+      <h2 class="text-sm font-bold text-white">Required Skills & Technologies</h2>
+      <div class="flex flex-wrap gap-2">
+        <% (opportunity.required_skills || []).forEach(skill => { %>
+          <% const isMatched = currentUser && (currentUser.skills || []).map(s => s.toLowerCase()).includes(skill.toLowerCase()); %>
+          <% if (isMatched) { %>
+            <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white border-2 border-indigo-500 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer flex items-center space-x-1">
+              <span>✓</span>
+              <span><%= skill %></span>
+            </span>
+          <% } else { %>
+            <span class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm">
+              <%= skill %>
+            </span>
+          <% } %>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <% if (opportunity.tags && opportunity.tags.length > 0) { %>
+      <div class="space-y-2 pt-4 border-t border-slate-800">
+        <h2 class="text-xs font-semibold text-slate-400 uppercase">Tags & Fields</h2>
+        <div class="flex flex-wrap gap-2">
+          <% opportunity.tags.forEach(tag => { %>
+            <span class="px-3 py-1 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm">
+              #<%= tag %>
+            </span>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+  </div>
+
+  <!-- Related Opportunities Cards -->
+  <% if (related && related.length > 0) { %>
+    <div class="space-y-4">
+      <h2 class="text-xl font-bold text-white">Related Opportunities</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <% related.forEach(rel => { %>
+          <a href="/opportunities/<%= rel.id %>" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-lg transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-500/60 flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+            <div>
+              <h3 class="font-bold text-white text-sm line-clamp-1"><%= rel.title %></h3>
+              <p class="text-xs text-slate-400 mt-1"><%= rel.organization %></p>
+            </div>
+            <div class="mt-4 text-xs font-semibold text-indigo-400 flex items-center justify-between">
+              <span>View Details</span>
+              <span>&rarr;</span>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

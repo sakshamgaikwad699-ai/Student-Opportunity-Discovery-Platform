@@ -1,0 +1,150 @@
+<%- include('partials/header') %>
+
+<!-- Hero Section -->
+<section class="relative overflow-hidden py-16 sm:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    
+    <!-- Hero Pill -->
+    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-100/90 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-200 text-xs font-semibold mb-6 shadow-xs border border-indigo-200/80 dark:border-indigo-800/80">
+      <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+      <span>Empowering Student Opportunities & Career Growth</span>
+    </div>
+
+    <!-- Main Headline & Problem/Solution Statement -->
+    <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight max-w-4xl mx-auto leading-tight">
+      Never Miss a Hackathon, Internship, or Scholarship Again.
+    </h1>
+
+    <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+      Students miss critical career opportunities because listings remain scattered across fragmented platforms. <strong class="text-indigo-600 dark:text-indigo-400 font-semibold">OpportuNest</strong> brings hackathons, internships, scholarships, certifications, and workshops into a single unified dashboard that automatically ranks listings using an <span class="underline decoration-indigo-300 underline-offset-4 font-semibold">explainable recommendation engine</span> and provides actionable skill gap insights.
+    </p>
+
+    <!-- CTAs -->
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="/signup" class="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base rounded-2xl shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-indigo-500/25 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+        Get Started Free
+      </a>
+      <a href="/opportunities" class="w-full sm:w-auto px-8 py-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-base rounded-2xl border border-slate-200/70 dark:border-slate-700/80 shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+        Explore Sample Opportunities &rarr;
+      </a>
+    </div>
+
+    <!-- Demo Login Box -->
+    <div class="mt-8 max-w-md mx-auto p-4 bg-amber-50/90 dark:bg-amber-950/40 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 rounded-2xl text-xs text-amber-900 dark:text-amber-200 flex items-center justify-between shadow-xs">
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-amber-900 dark:text-amber-200">⚡ Demo Login:</span>
+        <code>alex@student.edu</code> / <code>password123</code>
+      </div>
+      <form action="/login" method="POST" class="inline">
+        <input type="hidden" name="email" value="alex@student.edu">
+        <input type="hidden" name="password" value="password123">
+        <button type="submit" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          One-Click Login
+        </button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- Feature Cards Grid -->
+<section class="py-16 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-y border-slate-200/70 dark:border-slate-800/80">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Why OpportuNest Stands Out</h2>
+      <p class="mt-3 text-slate-600 dark:text-slate-400">Built specifically for students with transparent matching and actionable career guidance.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Feature 1: Explainable Recommendation Engine -->
+      <div class="p-6 rounded-3xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/70 dark:border-slate-800/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-300 dark:hover:border-indigo-500">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xl mb-4 shadow-xs">
+          🎯
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">100% Explainable Scoring</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+          No black-box external AI APIs. Every opportunity card explicitly shows exact match breakdowns (+3 per overlapping skill, +2 per interest match, +1 eligibility, +2 urgency boost).
+        </p>
+        <span class="inline-flex items-center text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+          Transparent Rules & Math &rarr;
+        </span>
+      </div>
+
+      <!-- Feature 2: ⭐ WOW Skill Gap Advisor -->
+      <div class="p-6 rounded-3xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-2 border-indigo-400/80 dark:border-indigo-500/80 shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-500/10 relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+          ⭐ WOW Feature
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-xl mb-4 shadow-xs">
+          🧠
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Skill Gap Advisor</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+          Hypothetically computes which single skill added to your profile unlocks the highest count of matching opportunities. Actionable guidance: <em>"Add SQL to unlock 4 more opportunities."</em>
+        </p>
+        <span class="inline-flex items-center text-xs font-semibold text-purple-600 dark:text-purple-400">
+          Proactive Guidance Engine &rarr;
+        </span>
+      </div>
+
+      <!-- Feature 3: ⭐ WOW Swipeable Discover Mode -->
+      <div class="p-6 rounded-3xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-2 border-purple-400/80 dark:border-purple-500/80 shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-500/10 relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-purple-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+          ⭐ WOW Feature
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 flex items-center justify-center font-bold text-xl mb-4 shadow-xs">
+          ⚡
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Swipeable Discovery Mode</h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+          Full mobile-ready card deck experience. Swipe right or press right arrow to bookmark; swipe left or press left arrow to skip. Fast, interactive opportunity evaluation.
+        </p>
+        <span class="inline-flex items-center text-xs font-semibold text-pink-600 dark:text-pink-400">
+          Instant Pitch Demo Deck &rarr;
+        </span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Category Showcase with Badges -->
+<section class="py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8">Covering All Key Opportunity Categories</h2>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-hackathon px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Hackathon</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">48h Challenges</span>
+      </div>
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-internship px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Internship</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">Summer Roles</span>
+      </div>
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-scholarship px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Scholarship</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">Merit & Diversity</span>
+      </div>
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-certification px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Certification</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">AWS & Google</span>
+      </div>
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-competition px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Competition</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">Kaggle & CTFs</span>
+      </div>
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-workshop px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Workshop</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">Hands-on Labs</span>
+      </div>
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/70 dark:border-slate-800/80 shadow-xs text-center">
+        <span class="badge-course px-2.5 py-1 rounded-full text-xs font-bold block mb-2">Course</span>
+        <span class="text-xs text-slate-500 dark:text-slate-400">Guided Learning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

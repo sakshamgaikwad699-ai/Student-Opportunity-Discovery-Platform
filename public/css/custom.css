@@ -1,0 +1,95 @@
+/* Custom styling & animations for OpportuNest Premium UI/UX */
+
+/* Smooth view transitions */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Category Badge Styles with Chip/Tag Hover */
+.badge-hackathon {
+  @apply bg-purple-100 text-purple-700 border border-purple-200 hover:bg-purple-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+.badge-internship {
+  @apply bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+.badge-scholarship {
+  @apply bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+.badge-certification {
+  @apply bg-amber-100 text-amber-700 border border-amber-200 hover:bg-amber-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+.badge-competition {
+  @apply bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+.badge-workshop {
+  @apply bg-teal-100 text-teal-700 border border-teal-200 hover:bg-teal-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+.badge-course {
+  @apply bg-cyan-100 text-cyan-700 border border-cyan-200 hover:bg-cyan-200 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm;
+}
+
+/* Discover Mode - Card Deck Animation */
+.card-deck-container {
+  perspective: 1000px;
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  height: 610px;
+  margin: 0 auto;
+}
+
+.swipe-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.swipe-card.swipe-left {
+  transform: translateX(-150%) rotate(-18deg) !important;
+  opacity: 0 !important;
+}
+
+.swipe-card.swipe-right {
+  transform: translateX(150%) rotate(18deg) !important;
+  opacity: 0 !important;
+}
+
+/* Category Breakdown Multi-segment CSS Bar Chart & Tooltips */
+.chart-bar-container {
+  height: 20px;
+  border-radius: 9999px;
+  overflow: hidden;
+  display: flex;
+  background-color: #f1f5f9;
+}
+.chart-segment {
+  height: 100%;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* Segment Tooltip */
+.chart-segment-wrapper {
+  position: relative;
+  height: 100%;
+}
+.chart-segment-wrapper:hover .chart-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-8px);
+}
+
+.chart-tooltip {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateY(-4px) translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 30;
+}

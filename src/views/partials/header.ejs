@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'OpportuNest - Student Opportunity Discovery' %></title>
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  <!-- Client Scripts -->
+  <script src="/js/bookmarkToggle.js" defer></script>
+</head>
+<body class="bg-[#0B0F17] min-h-screen flex flex-col font-sans antialiased text-slate-100 transition-colors duration-200">
+
+  <!-- Sticky Glass Navbar -->
+  <nav class="sticky top-0 backdrop-blur-xl bg-[#0F172A]/85 border-b border-slate-800/90 z-50 shadow-lg shadow-black/20 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center">
+          <a href="<%= currentUser ? '/dashboard' : '/' %>" class="flex items-center space-x-3 group rounded-xl p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-all duration-200">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-xl tracking-tight text-white group-hover:text-indigo-400 transition-colors">Opportu<span class="text-indigo-400">Nest</span></span>
+              <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider -mt-1">Student Platform</span>
+            </div>
+          </a>
+
+          <!-- Main Nav Links -->
+          <div class="hidden md:flex md:ml-10 md:space-x-1">
+            <% if (currentUser) { %>
+              <% const titleStr = typeof pageTitle !== 'undefined' ? pageTitle : ''; %>
+              <% const isDash = titleStr.includes('Dashboard'); %>
+              <% const isDisc = titleStr.includes('Discover Mode'); %>
+              <% const isOpps = titleStr.includes('Explore Opportunities'); %>
+              <% const isBook = titleStr.includes('Bookmarks'); %>
+
+              <a href="/dashboard" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 <%= isDash ? 'bg-indigo-950/80 text-indigo-300 font-bold border border-indigo-800/80 shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' %>">
+                Dashboard
+              </a>
+
+              <a href="/discover" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 flex items-center space-x-1.5 <%= isDisc ? 'bg-indigo-950/80 text-indigo-300 font-bold border border-indigo-800/80 shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' %>">
+                <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+                <span>Discover (Swipe)</span>
+              </a>
+
+              <a href="/opportunities" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 <%= isOpps ? 'bg-indigo-950/80 text-indigo-300 font-bold border border-indigo-800/80 shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' %>">
+                Explore All
+              </a>
+
+              <a href="/bookmarks" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 flex items-center space-x-1.5 <%= isBook ? 'bg-indigo-950/80 text-indigo-300 font-bold border border-indigo-800/80 shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' %>">
+                <span>My Saved</span>
+                <span class="bookmark-count-badge inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-950 text-indigo-300 border border-indigo-800/80">
+                  <%= typeof userBookmarkIds !== 'undefined' ? userBookmarkIds.size : 0 %>
+                </span>
+              </a>
+            <% } else { %>
+              <a href="/opportunities" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">Explore Opportunities</a>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- User Actions / Profile -->
+        <div class="hidden md:flex md:items-center md:space-x-3">
+          <% if (currentUser) { %>
+            <div class="flex items-center space-x-3 pl-3 border-l border-slate-800">
+              <a href="/profile" class="flex items-center space-x-2.5 group p-1 rounded-xl transition-all duration-200 hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold flex items-center justify-center text-sm shadow-md transition-transform duration-200 group-hover:scale-105">
+                  <%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U' %>
+                </div>
+                <div class="flex flex-col text-left">
+                  <span class="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors"><%= currentUser.name %></span>
+                  <span class="text-[10px] font-semibold text-slate-400"><%= currentUser.completionPercentage %>% Profile Complete</span>
+                </div>
+              </a>
+              <a href="/logout" class="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-rose-950/40 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40" title="Log Out">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </a>
+            </div>
+          <% } else { %>
+            <a href="/login" class="text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 rounded-xl hover:bg-slate-800/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">Log In</a>
+            <a href="/signup" class="inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-lg shadow-indigo-600/30 transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">Sign Up Free</a>
+          <% } %>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center space-x-2 md:hidden">
+          <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-[#0F172A]/95 backdrop-blur-md px-4 pt-2 pb-4 space-y-2">
+      <% if (currentUser) { %>
+        <a href="/dashboard" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-indigo-400 transition-colors">Dashboard</a>
+        <a href="/discover" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-purple-300 hover:bg-slate-800 transition-colors">Discover (Swipe Mode)</a>
+        <a href="/opportunities" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-indigo-400 transition-colors">Explore Opportunities</a>
+        <a href="/bookmarks" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-indigo-400 transition-colors">My Saved Bookmarks (<%= typeof userBookmarkIds !== 'undefined' ? userBookmarkIds.size : 0 %>)</a>
+        <a href="/profile" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-indigo-400 transition-colors">My Profile (<%= currentUser.completionPercentage %>%)</a>
+        <a href="/logout" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-rose-400 hover:bg-rose-950/40 transition-colors">Log Out</a>
+      <% } else { %>
+        <a href="/opportunities" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-indigo-400 transition-colors">Explore Opportunities</a>
+        <a href="/login" class="block px-3.5 py-2.5 rounded-xl text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-indigo-400 transition-colors">Log In</a>
+        <a href="/signup" class="block px-3.5 py-2.5 rounded-xl text-base font-bold text-white bg-indigo-600 text-center">Sign Up Free</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <main class="flex-grow">

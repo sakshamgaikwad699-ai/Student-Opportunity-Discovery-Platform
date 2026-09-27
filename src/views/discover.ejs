@@ -1,0 +1,165 @@
+<%- include('partials/header') %>
+
+<!-- Client-side swipe script -->
+<script src="/js/swipeCard.js" defer></script>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+  
+  <!-- Discover Header & Counter -->
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+    <div>
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-950/80 text-purple-300 text-xs font-extrabold mb-1.5 border border-purple-800">
+        <span>⭐ WOW Feature</span>
+        <span>&bull;</span>
+        <span>Swipeable Discovery Mode</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">Interactive Opportunity Deck</h1>
+      <p class="text-xs text-slate-400 mt-0.5">Use <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded font-mono text-[10px] text-slate-300">&larr;</kbd> Arrow or Pass button to skip, <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded font-mono text-[10px] text-slate-300">&rarr;</kbd> Arrow or Save button to bookmark</p>
+    </div>
+
+    <div class="flex items-center space-x-3">
+      <span id="deck-counter" class="px-4 py-2 bg-indigo-600 text-white font-black text-sm rounded-2xl shadow-lg shadow-indigo-600/30">
+        Card 1 of <%= deck.length %>
+      </span>
+      <a href="/opportunities" class="px-4 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 font-bold text-xs rounded-2xl transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+        📋 List View
+      </a>
+    </div>
+  </div>
+
+  <!-- Swipe Card Deck Container -->
+  <div class="relative min-h-[580px] flex items-center justify-center py-4">
+    
+    <!-- Empty Deck Celebration Notice (Hidden initially) -->
+    <div id="empty-deck-notice" class="hidden text-center bg-slate-900 p-12 rounded-3xl border border-slate-800 shadow-2xl max-w-lg mx-auto space-y-4 z-10">
+      <div class="text-6xl">🎉</div>
+      <h2 class="text-2xl font-black text-white">You've Swiped Through All Opportunities!</h2>
+      <p class="text-sm text-slate-300 leading-relaxed">Great job exploring! Check your saved bookmarks or return to the dashboard to review recommendations.</p>
+      <div class="flex items-center justify-center space-x-3 pt-4">
+        <a href="/bookmarks" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-600/30 transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">View Saved Bookmarks</a>
+        <a href="/discover" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl border border-slate-700 transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">Restart Deck</a>
+      </div>
+    </div>
+
+    <!-- Stack of Cards -->
+    <div id="discover-deck" class="card-deck-container">
+      <% deck.forEach((opp, idx) => { %>
+        <% const isBookmarked = userBookmarkIds.has(opp.id); %>
+        
+        <div class="swipe-card bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl shadow-black/50 p-6 sm:p-8 flex flex-col justify-between" 
+             style="z-index: <%= deck.length - idx %>;" 
+             data-opportunity-id="<%= opp.id %>" 
+             data-opportunity-title="<%= opp.title %>">
+          
+          <div class="space-y-4">
+            
+            <!-- Category Badge & Score -->
+            <div class="flex items-center justify-between">
+              <% let badgeClass = 'badge-internship';
+                 if (opp.category === 'hackathon') badgeClass = 'badge-hackathon';
+                 else if (opp.category === 'scholarship') badgeClass = 'badge-scholarship';
+                 else if (opp.category === 'certification') badgeClass = 'badge-certification';
+                 else if (opp.category === 'competition') badgeClass = 'badge-competition';
+                 else if (opp.category === 'workshop') badgeClass = 'badge-workshop';
+                 else if (opp.category === 'course') badgeClass = 'badge-course';
+              %>
+              <span class="<%= badgeClass %> px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider">
+                <%= opp.category %>
+              </span>
+
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-indigo-950/80 text-indigo-300 border border-indigo-800/80">
+                🎯 Match: <%= opp.matchScore %> pts
+              </span>
+            </div>
+
+            <!-- Title & Org -->
+            <div>
+              <h2 class="text-2xl font-black text-white leading-tight">
+                <%= opp.title %>
+              </h2>
+              <p class="text-sm font-semibold text-indigo-400 mt-1">
+                🏛️ <%= opp.organization %> &bull; 📍 <%= opp.location %>
+              </p>
+            </div>
+
+            <!-- EXPLAINABLE WHY RECOMMENDED -->
+            <% if (opp.matchDetails && opp.matchDetails.reasons.length > 0) { %>
+              <div class="p-3.5 bg-gradient-to-r from-indigo-950/90 to-purple-950/90 rounded-2xl border border-indigo-800/80 text-xs space-y-1">
+                <span class="font-bold text-indigo-300 block text-[11px] uppercase tracking-wider">Why Recommended:</span>
+                <% opp.matchDetails.reasons.forEach(r => { %>
+                  <div class="flex items-center space-x-1.5 text-slate-300">
+                    <span class="text-indigo-400 font-bold">✓</span>
+                    <span><%= r %></span>
+                  </div>
+                <% }) %>
+              </div>
+            <% } %>
+
+            <!-- Description -->
+            <p class="text-xs text-slate-300 line-clamp-4 leading-relaxed">
+              <%= opp.description %>
+            </p>
+
+            <!-- Required Skills Tags with Matched Skill Highlights -->
+            <div class="space-y-1">
+              <span class="text-[11px] font-semibold text-slate-400 uppercase">Required Skills:</span>
+              <div class="flex flex-wrap gap-1.5">
+                <% (opp.required_skills || []).forEach(skill => { %>
+                  <% const isMatched = currentUser && (currentUser.skills || []).map(s => s.toLowerCase()).includes(skill.toLowerCase()); %>
+                  <% if (isMatched) { %>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white border-2 border-indigo-500 shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer flex items-center space-x-1">
+                      <span>✓</span>
+                      <span><%= skill %></span>
+                    </span>
+                  <% } else { %>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm">
+                      <%= skill %>
+                    </span>
+                  <% } %>
+                <% }) %>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Deadline Info -->
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-400">
+              ⏰ Deadline: <%= opp.deadline %> (<%= opp.daysRemaining %> days left)
+            </span>
+            <a href="/opportunities/<%= opp.id %>" target="_blank" class="text-indigo-400 hover:underline font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500/40 rounded-sm">
+              View Details &rarr;
+            </a>
+          </div>
+
+        </div>
+      <% }) %>
+    </div>
+
+  </div>
+
+  <!-- Swipe Control Action Buttons with Button Hover -->
+  <div class="flex items-center justify-center space-x-6 pt-2">
+    <!-- Pass Button (Left) -->
+    <button id="btn-pass" type="button" class="w-16 h-16 rounded-full bg-slate-800 border-2 border-rose-800 text-rose-400 hover:bg-rose-950/40 flex items-center justify-center text-2xl shadow-lg transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 group" title="Pass / Skip (Left Arrow)">
+      <span class="transition-transform duration-200 group-hover:scale-125">❌</span>
+    </button>
+
+    <!-- Save Button (Right) -->
+    <button id="btn-save" type="button" class="w-16 h-16 rounded-full bg-indigo-600 text-white hover:bg-indigo-500 flex items-center justify-center text-2xl shadow-xl shadow-indigo-600/30 transition-all duration-200 hover:scale-110 active:scale-95 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 group" title="Save Bookmark (Right Arrow)">
+      <span class="transition-transform duration-300 group-hover:scale-125 active:scale-125">⭐</span>
+    </button>
+  </div>
+
+  <p class="text-center text-xs text-slate-500 font-medium">
+    Tip: Press <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded font-mono text-slate-300">ArrowLeft</kbd> on your keyboard to Pass or <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded font-mono text-slate-300">ArrowRight</kbd> to Save!
+  </p>
+
+</div>
+
+<!-- Feedback Toast Notification -->
+<div id="swipe-toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 px-5 py-3 rounded-full text-white font-medium text-sm shadow-xl transition-all duration-300 z-50 opacity-0 pointer-events-none">
+  Toast Message
+</div>
+
+<%- include('partials/footer') %>

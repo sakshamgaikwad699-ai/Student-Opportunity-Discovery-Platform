@@ -1,0 +1,25 @@
+{
+  "name": "opportunest",
+  "version": "1.0.0",
+  "description": "OpportuNest - Student Opportunity Discovery Platform with Explainable Recommendation Engine and Skill Gap Advisor",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node src/app.js",
+    "seed": "node src/seed/seeder.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "sql.js": "^1.14.2",
+    "sqlite3": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

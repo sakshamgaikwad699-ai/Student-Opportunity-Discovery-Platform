@@ -1,0 +1,157 @@
+<%- include('partials/header') %>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+  
+  <!-- Back Link & Header -->
+  <div class="flex items-center justify-between">
+    <a href="/opportunities/<%= opportunity.id %>" class="inline-flex items-center space-x-2 text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors p-1.5 rounded-xl hover:bg-slate-100/80 dark:hover:bg-slate-800/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span>&larr; Back to Opportunity Details</span>
+    </a>
+
+    <% let badgeClass = 'badge-internship';
+       if (opportunity.category === 'hackathon') badgeClass = 'badge-hackathon';
+       else if (opportunity.category === 'scholarship') badgeClass = 'badge-scholarship';
+       else if (opportunity.category === 'certification') badgeClass = 'badge-certification';
+       else if (opportunity.category === 'competition') badgeClass = 'badge-competition';
+       else if (opportunity.category === 'workshop') badgeClass = 'badge-workshop';
+       else if (opportunity.category === 'course') badgeClass = 'badge-course';
+    %>
+    <span class="<%= badgeClass %> px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+      <%= opportunity.category %>
+    </span>
+  </div>
+
+  <% if (submitted) { %>
+    <!-- Success Application Submitted Banner -->
+    <div class="bg-emerald-50/90 dark:bg-emerald-950/60 backdrop-blur-md p-8 rounded-3xl border border-emerald-200 dark:border-emerald-800 text-center space-y-4 shadow-lg">
+      <div class="w-16 h-16 bg-emerald-500 text-white font-extrabold text-3xl rounded-full flex items-center justify-center mx-auto shadow-md">
+        ✓
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-emerald-950 dark:text-emerald-100">Application Submitted Successfully!</h2>
+        <p class="text-sm text-emerald-800 dark:text-emerald-300 mt-1">
+          Your student application for <strong><%= opportunity.title %></strong> has been registered with <strong><%= opportunity.organization %></strong>.
+        </p>
+      </div>
+
+      <div class="p-4 bg-white/80 dark:bg-slate-900/80 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/80 max-w-md mx-auto text-left text-xs space-y-1.5 font-mono text-slate-700 dark:text-slate-300">
+        <div><strong class="text-slate-900 dark:text-slate-100 font-sans">Application Ref ID:</strong> #ON-2026-<%= opportunity.id %>-8942</div>
+        <div><strong class="text-slate-900 dark:text-slate-100 font-sans">Applicant Name:</strong> <%= currentUser ? currentUser.name : 'Alex Rivera' %></div>
+        <div><strong class="text-slate-900 dark:text-slate-100 font-sans">Email:</strong> <%= currentUser ? currentUser.email : 'alex@student.edu' %></div>
+        <div><strong class="text-slate-900 dark:text-slate-100 font-sans">Status:</strong> <span class="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 font-bold">In Review</span></div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <a href="/dashboard" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+          Return to Dashboard
+        </a>
+        <a href="<%= opportunity.external_link %>" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 flex items-center space-x-1.5">
+          <span>Visit Official Partner Portal</span>
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  <% } %>
+
+  <!-- Application Gateway Form & Partner Portal Box -->
+  <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-6 sm:p-10 rounded-3xl border border-slate-200/70 dark:border-slate-800 shadow-sm space-y-8">
+    
+    <!-- Title Card -->
+    <div class="border-b border-slate-100 dark:border-slate-800 pb-6 space-y-2">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold border border-indigo-200/80 dark:border-indigo-800/80">
+        <span>🚀 Application Gateway</span>
+        <span>&bull;</span>
+        <span><%= opportunity.organization %></span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight"><%= opportunity.title %></h1>
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        📍 <%= opportunity.location %> &bull; ⏰ Deadline: <%= opportunity.deadline %> (<%= opportunity.daysRemaining %> days left)
+      </p>
+    </div>
+
+    <% if (currentUser) { %>
+      <!-- Student Profile Auto-Fill Preview -->
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+          <span>📋 Student Profile Auto-Fill Confirmation</span>
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-1">
+            <span class="text-slate-400 dark:text-slate-500 block font-semibold uppercase">Full Name</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100 text-sm"><%= currentUser.name %></span>
+          </div>
+
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-1">
+            <span class="text-slate-400 dark:text-slate-500 block font-semibold uppercase">Student Email</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100 text-sm"><%= currentUser.email %></span>
+          </div>
+
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-1">
+            <span class="text-slate-400 dark:text-slate-500 block font-semibold uppercase">Education Level</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100 text-sm"><%= currentUser.education_level %> - <%= currentUser.field_of_study %></span>
+          </div>
+
+          <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-1">
+            <span class="text-slate-400 dark:text-slate-500 block font-semibold uppercase">Match Score</span>
+            <span class="font-bold text-indigo-600 dark:text-indigo-400 text-sm">🎯 <%= matchDetails ? matchDetails.score : 0 %> pts Match</span>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Application Action Options -->
+    <div class="pt-6 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Option 1: In-App One-Click Application -->
+      <div class="p-6 bg-indigo-50/50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-200/80 dark:border-indigo-800/80 space-y-4 flex flex-col justify-between">
+        <div class="space-y-2">
+          <span class="px-2.5 py-1 bg-indigo-600 text-white rounded-md text-[10px] font-extrabold uppercase tracking-wider">Fast-Track</span>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">One-Click Quick Apply</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Submit your profile, skills, and match score directly to <strong><%= opportunity.organization %></strong> via OpportuNest's partner network.
+          </p>
+        </div>
+
+        <% if (currentUser) { %>
+          <form action="/opportunities/<%= opportunity.id %>/apply" method="POST">
+            <button type="submit" class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-indigo-500/20 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+              Submit Direct Application &rarr;
+            </button>
+          </form>
+        <% } else { %>
+          <a href="/login" class="block text-center py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95">
+            Log In to Quick Apply
+          </a>
+        <% } %>
+      </div>
+
+      <!-- Option 2: Direct External Partner Site Link -->
+      <div class="p-6 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200/70 dark:border-slate-700/60 space-y-4 flex flex-col justify-between">
+        <div class="space-y-2">
+          <span class="px-2.5 py-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-md text-[10px] font-extrabold uppercase tracking-wider">Official Portal</span>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Visit Partner Website</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Open the official application portal on <strong><%= opportunity.organization %></strong>'s site in a new tab.
+          </p>
+        </div>
+
+        <a href="<%= opportunity.external_link %>" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-4 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-xl shadow-xs transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 flex items-center justify-center space-x-2">
+          <span>Open <%= opportunity.organization %> Site</span>
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>

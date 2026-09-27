@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+  
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">My Saved Bookmarks</h1>
+      <p class="text-sm text-slate-400 mt-1">Quickly access opportunities you saved for later application</p>
+    </div>
+    <span class="px-4 py-2 bg-indigo-950/80 text-indigo-300 font-bold text-xs rounded-xl border border-indigo-800/80 shadow-sm">
+      Total Saved: <%= bookmarks.length %>
+    </span>
+  </div>
+
+  <% if (bookmarks.length === 0) { %>
+    <div class="bg-slate-900 p-16 text-center rounded-3xl border border-slate-800 space-y-4 shadow-xl">
+      <div class="text-5xl">⭐</div>
+      <h2 class="text-xl font-bold text-white">No saved opportunities yet</h2>
+      <p class="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
+        Browse opportunities or try the swipeable Discover mode to bookmark listings you want to apply for.
+      </p>
+      <div class="flex items-center justify-center space-x-3 pt-2">
+        <a href="/opportunities" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">Explore Opportunities</a>
+        <a href="/discover" class="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-purple-600/30 transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-500/40">Swipe Discover Mode</a>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% bookmarks.forEach(opp => { %>
+        <!-- Standard Card Hover applied -->
+        <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-lg transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-500/60 flex flex-col justify-between overflow-hidden group">
+          
+          <div class="p-6 space-y-4">
+            
+            <div class="flex items-center justify-between">
+              <% let badgeClass = 'badge-internship';
+                 if (opp.category === 'hackathon') badgeClass = 'badge-hackathon';
+                 else if (opp.category === 'scholarship') badgeClass = 'badge-scholarship';
+                 else if (opp.category === 'certification') badgeClass = 'badge-certification';
+                 else if (opp.category === 'competition') badgeClass = 'badge-competition';
+                 else if (opp.category === 'workshop') badgeClass = 'badge-workshop';
+                 else if (opp.category === 'course') badgeClass = 'badge-course';
+              %>
+              <span class="<%= badgeClass %> px-3 py-1 rounded-full text-xs font-bold capitalize">
+                <%= opp.category %>
+              </span>
+
+              <span class="text-[11px] text-slate-400 font-medium">Saved <%= new Date(opp.bookmarked_at).toLocaleDateString() %></span>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-lg text-white group-hover:text-indigo-400 transition-colors line-clamp-2">
+                <a href="/opportunities/<%= opp.id %>" class="focus:outline-none focus:ring-2 focus:ring-indigo-500/40 rounded-sm"><%= opp.title %></a>
+              </h3>
+              <p class="text-xs font-semibold text-slate-400 mt-1"><%= opp.organization %> &bull; <%= opp.location %></p>
+            </div>
+
+            <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+              <%= opp.description %>
+            </p>
+
+            <div class="flex flex-wrap gap-1.5">
+              <% (opp.required_skills || []).forEach(skill => { %>
+                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer hover:shadow-sm">
+                  <%= skill %>
+                </span>
+              <% }) %>
+            </div>
+
+          </div>
+
+          <div class="px-6 py-4 bg-slate-950/60 border-t border-slate-800 flex items-center justify-between text-xs">
+            <span class="font-semibold <%= opp.daysRemaining <= 7 ? 'text-amber-400 font-bold' : 'text-slate-400' %>">
+              ⏰ Deadline: <%= opp.deadline %>
+            </span>
+
+            <div class="flex items-center space-x-2">
+              <button data-opportunity-id="<%= opp.id %>" class="bookmark-toggle-btn px-3 py-1.5 bg-indigo-600 text-white rounded-xl font-semibold flex items-center space-x-1.5 transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+                <svg class="w-4 h-4 bookmark-icon transition-transform duration-300 active:scale-125" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+                <span class="bookmark-text">Saved</span>
+              </button>
+
+              <a href="/opportunities/<%= opp.id %>" class="px-3 py-1.5 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
+                Details
+              </a>
+            </div>
+          </div>
+
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>
