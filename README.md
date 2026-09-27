@@ -1,5 +1,6 @@
 # OpportuNest 🪹 — Student Opportunity Discovery Platform
 
+
 > **OpportuNest** is a production-ready, full-stack student opportunity discovery web application featuring a rule-based, fully transparent recommendation engine, proactive skill-gap analysis, and a swipeable discovery mode deck.
 
 ---
@@ -223,3 +224,4 @@ Once deployed, Google Cloud Run will output a public HTTPS URL (e.g., `https://o
 - **Swipeable Discover Deck (`/discover`):** Large interactive opportunity deck with smooth card swiping and keyboard arrow shortcuts.
 - **Opportunity Search (`/opportunities`):** Multi-parametric filtering by category, deadline range, location, and required skills.
 - **Opportunity Detail (`/opportunities/:id`):** Deep-dive view with transparent recommendation point breakdown and direct external application links.
+

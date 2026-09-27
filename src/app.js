@@ -59,7 +59,7 @@ app.use('/', discoverRoutes);
 // Global Error Handler
 app.use(errorHandler);
 
-// Start server after DB initialization & auto-seeding
+// Start server after DB initialization & auto-seeding (standalone only)
 async function startServer() {
   try {
     await initDatabase();
@@ -73,4 +73,9 @@ async function startServer() {
   }
 }
 
-startServer();
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  startServer();
+}
+
+module.exports = app;
+

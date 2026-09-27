@@ -1,12 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataDir = path.join(__dirname, '../../data');
+// In Vercel serverless functions, only /tmp is writable
+const dataDir = process.env.VERCEL ? '/tmp' : path.join(__dirname, '../../data');
 if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+  try {
+    fs.mkdirSync(dataDir, { recursive: true });
+  } catch (e) {}
 }
 
 const dbPath = path.join(dataDir, 'opportunest.db');
+
 
 let db = null;
 
