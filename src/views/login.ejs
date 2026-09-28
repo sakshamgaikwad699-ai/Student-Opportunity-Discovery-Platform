@@ -18,16 +18,16 @@
     <% } %>
 
     <!-- Demo Login Box -->
-    <div class="p-4 bg-amber-50/90 dark:bg-amber-950/40 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 rounded-2xl text-xs text-amber-900 dark:text-amber-200 flex items-center justify-between">
+    <div class="p-4 bg-gradient-to-r from-amber-500/15 to-indigo-500/15 backdrop-blur-md border border-amber-400/50 rounded-2xl text-xs text-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
       <div>
-        <span class="font-bold text-amber-900 dark:text-amber-200 block">Demo Evaluator Account:</span>
-        <code>alex@student.edu</code> / <code>password123</code>
+        <span class="font-extrabold text-amber-300 text-sm block">⚡ Quick Evaluator Demo</span>
+        <span class="text-slate-300 text-xs">Login with 1-click as sample student (Alex)</span>
       </div>
-      <form action="/login" method="POST" class="inline">
+      <form action="/login" method="POST" class="inline w-full sm:w-auto">
         <input type="hidden" name="email" value="alex@student.edu">
         <input type="hidden" name="password" value="password123">
-        <button type="submit" class="px-3.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
-          Fill & Login
+        <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold rounded-xl text-xs transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-500/40">
+          🚀 Instant Demo Login
         </button>
       </form>
     </div>

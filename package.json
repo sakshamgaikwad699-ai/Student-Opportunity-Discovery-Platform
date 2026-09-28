@@ -2,10 +2,10 @@
   "name": "opportunest",
   "version": "1.0.0",
   "description": "OpportuNest - Student Opportunity Discovery Platform with Explainable Recommendation Engine and Skill Gap Advisor",
-  "main": "src/app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "node src/app.js",
+    "start": "node server.js",
+    "dev": "node server.js",
     "seed": "node src/seed/seeder.js"
   },
   "dependencies": {

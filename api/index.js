@@ -9,7 +9,10 @@ async function ensureInitialized() {
     initPromise = (async () => {
       await initDatabase();
       seedDatabase();
-    })();
+    })().catch(err => {
+      initPromise = null;
+      throw err;
+    });
   }
   return initPromise;
 }

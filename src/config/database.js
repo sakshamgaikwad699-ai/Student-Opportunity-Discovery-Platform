@@ -107,7 +107,43 @@ async function initDatabase() {
   } catch (err) {
     console.log('Native better-sqlite3 unavailable. Using sql.js fallback driver.');
     const initSqlJs = require('sql.js');
-    const SQL = await initSqlJs();
+
+    let wasmBinary = null;
+    const candidates = [
+      path.join(process.cwd(), 'node_modules/sql.js/dist/sql-wasm.wasm'),
+      path.join(__dirname, '../../node_modules/sql.js/dist/sql-wasm.wasm')
+    ];
+
+    try {
+      const resolved = require.resolve('sql.js/dist/sql-wasm.wasm');
+      candidates.unshift(resolved);
+    } catch (e) {}
+
+    for (const candidate of candidates) {
+      try {
+        if (fs.existsSync(candidate)) {
+          wasmBinary = fs.readFileSync(candidate);
+          console.log(`Loaded sql-wasm.wasm from: ${candidate}`);
+          break;
+        }
+      } catch (e) {}
+    }
+
+    if (!wasmBinary && typeof fetch === 'function') {
+      try {
+        console.log('Fetching sql-wasm.wasm from CDN fallback...');
+        const response = await fetch('https://sql.js.org/dist/sql-wasm.wasm');
+        if (response.ok) {
+          const ab = await response.arrayBuffer();
+          wasmBinary = Buffer.from(ab);
+          console.log('Successfully fetched sql-wasm.wasm from CDN fallback.');
+        }
+      } catch (cdnErr) {
+        console.warn('Failed to load sql-wasm.wasm from CDN:', cdnErr.message);
+      }
+    }
+
+    const SQL = await initSqlJs(wasmBinary ? { wasmBinary } : {});
     db = new SqlJsAdapter(SQL, dbPath);
     db.pragma('foreign_keys = ON');
     console.log('Successfully initialized sql.js persistent database adapter.');

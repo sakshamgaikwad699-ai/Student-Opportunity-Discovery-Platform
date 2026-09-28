@@ -29,19 +29,26 @@
       </a>
     </div>
 
-    <!-- Demo Login Box -->
-    <div class="mt-8 max-w-md mx-auto p-4 bg-amber-50/90 dark:bg-amber-950/40 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 rounded-2xl text-xs text-amber-900 dark:text-amber-200 flex items-center justify-between shadow-xs">
-      <div class="flex items-center space-x-2">
-        <span class="font-bold text-amber-900 dark:text-amber-200">⚡ Demo Login:</span>
-        <code>alex@student.edu</code> / <code>password123</code>
+    <!-- Demo Login Box for Non-Tech Evaluators -->
+    <div class="mt-8 max-w-lg mx-auto p-5 bg-gradient-to-r from-amber-500/15 via-indigo-500/15 to-purple-500/15 backdrop-blur-md border border-amber-400/50 rounded-2xl text-left shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 text-xs font-bold uppercase tracking-wider">⚡ 1-Click Demo Login</span>
+            <span class="text-xs text-slate-300 font-semibold">No signup needed</span>
+          </div>
+          <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+            Test as student <strong>Alex Rivera</strong> with pre-loaded skills, intelligent opportunity matches, and skill recommendations.
+          </p>
+        </div>
+        <form action="/login" method="POST" class="shrink-0">
+          <input type="hidden" name="email" value="alex@student.edu">
+          <input type="hidden" name="password" value="password123">
+          <button type="submit" class="w-full sm:w-auto px-5 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold rounded-xl text-sm transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-md flex items-center justify-center space-x-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500/40">
+            <span>🚀 Instant Demo Login</span>
+          </button>
+        </form>
       </div>
-      <form action="/login" method="POST" class="inline">
-        <input type="hidden" name="email" value="alex@student.edu">
-        <input type="hidden" name="password" value="password123">
-        <button type="submit" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs transition-all duration-200 hover:scale-[1.02] active:scale-95 shadow-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/40">
-          One-Click Login
-        </button>
-      </form>
     </div>
 
   </div>

@@ -38,8 +38,8 @@ function seedDatabase() {
   }
 
   // Check demo user
-  const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get();
-  if (userCount.count === 0) {
+  const demoUser = db.prepare("SELECT id FROM users WHERE email = ?").get('alex@student.edu');
+  if (!demoUser) {
     console.log('Seeding initial demo student account...');
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync('password123', salt);

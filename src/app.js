@@ -30,11 +30,13 @@ app.use(cookieParser(SESSION_SECRET));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Session configuration
+app.set('trust proxy', 1);
 app.use(session({
   secret: SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   cookie: {
+    sameSite: 'lax',
     maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
   }
 }));
@@ -73,7 +75,7 @@ async function startServer() {
   }
 }
 
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (require.main === module) {
   startServer();
 }
 

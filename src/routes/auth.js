@@ -49,16 +49,22 @@ router.post('/signup', (req, res) => {
 
   const newUser = db.prepare("SELECT * FROM users WHERE id = ?").get(result.lastInsertRowid);
   req.session.user = newUser;
+  res.cookie('auth_user_id', String(newUser.id), {
+    signed: true,
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    sameSite: 'lax'
+  });
 
   req.session.save((err) => {
     if (err) console.error('Session save error on signup:', err);
-    res.redirect('/profile?welcome=1');
+    res.redirect(303, '/dashboard');
   });
 });
 
 // GET /login
 router.get('/login', (req, res) => {
-  if (req.session && req.session.user) {
+  if (res.locals.currentUser || (req.session && req.session.user)) {
     return res.redirect('/dashboard');
   }
   res.render('login', { error: null, pageTitle: 'Log In - OpportuNest' });
@@ -79,6 +85,13 @@ router.post('/login', (req, res) => {
   }
 
   req.session.user = user;
+  res.cookie('auth_user_id', String(user.id), {
+    signed: true,
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    sameSite: 'lax'
+  });
+
   req.session.save((err) => {
     if (err) console.error('Session save error on login:', err);
     res.redirect(303, '/dashboard');
@@ -88,9 +101,14 @@ router.post('/login', (req, res) => {
 
 // GET & POST /logout
 router.all('/logout', (req, res) => {
-  req.session.destroy(() => {
+  res.clearCookie('auth_user_id');
+  if (req.session) {
+    req.session.destroy(() => {
+      res.redirect('/');
+    });
+  } else {
     res.redirect('/');
-  });
+  }
 });
 
 // GET /profile
