@@ -5,8 +5,9 @@ const { requireAuth } = require('../middleware/auth');
 const { scoreOpportunity, rankOpportunitiesForUser } = require('../services/recommendationEngine');
 const { analyzeSkillGaps } = require('../services/skillGapAdvisor');
 
-// GET /dashboard
-router.get('/dashboard', requireAuth, (req, res) => {
+// GET & POST /dashboard (handles redirects from POST forms cleanly)
+router.all('/dashboard', requireAuth, (req, res) => {
+
   const db = getDb();
   const user = res.locals.currentUser;
 

@@ -81,9 +81,10 @@ router.post('/login', (req, res) => {
   req.session.user = user;
   req.session.save((err) => {
     if (err) console.error('Session save error on login:', err);
-    res.redirect('/dashboard');
+    res.redirect(303, '/dashboard');
   });
 });
+
 
 // GET & POST /logout
 router.all('/logout', (req, res) => {
