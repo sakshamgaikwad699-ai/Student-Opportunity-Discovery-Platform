@@ -48,7 +48,7 @@ router.post('/signup', (req, res) => {
   );
 
   const newUser = db.prepare("SELECT * FROM users WHERE id = ?").get(result.lastInsertRowid);
-  req.session.user = newUser;
+  req.session.user = { id: newUser.id, email: newUser.email, name: newUser.name };
   res.cookie('auth_user_id', String(newUser.id), {
     signed: true,
     httpOnly: true,
@@ -56,10 +56,14 @@ router.post('/signup', (req, res) => {
     sameSite: 'lax'
   });
 
-  req.session.save((err) => {
-    if (err) console.error('Session save error on signup:', err);
+  if (req.session && typeof req.session.save === 'function') {
+    req.session.save((err) => {
+      if (err) console.error('Session save error on signup:', err);
+      res.redirect(303, '/dashboard');
+    });
+  } else {
     res.redirect(303, '/dashboard');
-  });
+  }
 });
 
 // GET /login
@@ -84,7 +88,7 @@ router.post('/login', (req, res) => {
     return res.render('login', { error: 'Invalid email or password.', pageTitle: 'Log In - OpportuNest' });
   }
 
-  req.session.user = user;
+  req.session.user = { id: user.id, email: user.email, name: user.name };
   res.cookie('auth_user_id', String(user.id), {
     signed: true,
     httpOnly: true,
@@ -92,21 +96,28 @@ router.post('/login', (req, res) => {
     sameSite: 'lax'
   });
 
-  req.session.save((err) => {
-    if (err) console.error('Session save error on login:', err);
+  if (req.session && typeof req.session.save === 'function') {
+    req.session.save((err) => {
+      if (err) console.error('Session save error on login:', err);
+      res.redirect(303, '/dashboard');
+    });
+  } else {
     res.redirect(303, '/dashboard');
-  });
+  }
 });
 
 
 // GET & POST /logout
 router.all('/logout', (req, res) => {
   res.clearCookie('auth_user_id');
-  if (req.session) {
+  res.clearCookie('session');
+  res.clearCookie('session.sig');
+  if (req.session && typeof req.session.destroy === 'function') {
     req.session.destroy(() => {
       res.redirect('/');
     });
   } else {
+    req.session = null;
     res.redirect('/');
   }
 });
@@ -175,7 +186,7 @@ router.post('/profile', requireAuth, (req, res) => {
   try { updatedUser.interests = JSON.parse(updatedUser.interests || '[]'); } catch (e) { updatedUser.interests = []; }
   try { updatedUser.preferred_categories = JSON.parse(updatedUser.preferred_categories || '[]'); } catch (e) { updatedUser.preferred_categories = []; }
 
-  req.session.user = updatedUser;
+  req.session.user = { id: updatedUser.id, email: updatedUser.email, name: updatedUser.name };
 
   res.render('profile', {
     user: updatedUser,

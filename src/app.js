@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
@@ -29,16 +29,13 @@ app.use(express.json());
 app.use(cookieParser(SESSION_SECRET));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Session configuration
+// Session configuration (cookie-based for serverless persistence across Lambda instances)
 app.set('trust proxy', 1);
-app.use(session({
-  secret: SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    sameSite: 'lax',
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
-  }
+app.use(cookieSession({
+  name: 'session',
+  keys: [SESSION_SECRET],
+  maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  sameSite: 'lax'
 }));
 
 // Attach current user & bookmarks to all views

@@ -6,12 +6,14 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "seed": "node src/seed/seeder.js"
+    "seed": "node src/seed/seeder.js",
+    "postinstall": "npm rebuild better-sqlite3 || true"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^11.8.1",
     "cookie-parser": "^1.4.7",
+    "cookie-session": "^2.1.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
